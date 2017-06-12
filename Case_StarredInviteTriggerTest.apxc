@@ -1,0 +1,56 @@
+@isTest
+public class Case_StarredInviteTriggerTest {
+
+    static testMethod void testUpdateCaseTrigger(){
+
+		Test.startTest();
+    	Test.setMock(HttpCalloutMock.class, new StarredCalloutMock());
+
+        // Create test account
+        Account account = new Account(
+            Name = ‘YOUR_ACCOUNT_NAME’,
+            KvKnr__c = ‘CHAMBER_OF_COMMERCE_NUMBER’
+        );
+
+        insert account;
+
+        // Create test user (owner)
+        Profile p = [SELECT Id FROM Profile WHERE Name='Standard User'];
+        User owner = new User(
+            Email=‘USER_EMAIL’,
+            FirstName = ‘John’,
+            LastName=‘Doe’,
+            UserName='john@doe.com',
+            Alias = ‘JohnDoe’,
+            TimeZoneSidKey = 'Europe/Amsterdam',
+            LocaleSidKey = 'en_US',
+            EmailEncodingKey = 'UTF-8',
+            ProfileId = p.Id,
+            LanguageLocaleKey = 'en_US'
+        );
+
+        insert owner;
+
+        // Create test contact
+        Contact contact = new Contact(
+            Email = ‘jane@doe.com',
+            FirstName = ‘Jane’,
+            LastName = ‘Doe’
+        );
+
+        insert contact;
+
+        // Create test case
+        Case c = new Case(
+            ContactId = contact.Id,
+            OwnerId = owner.Id,
+            AccountId = account.Id,
+            Status = ‘Closed’
+        );
+
+        insert c;
+
+        Test.stopTest();
+    }
+
+}

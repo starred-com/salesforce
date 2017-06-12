@@ -1,0 +1,74 @@
+public class StarredInvitationSender {
+
+    // Defining constants
+    // These values can be copied to other trigger implementations
+    private static final String ApiURL = 'https://api.starred.com/sendinvitations?company={0}&auth={1}&form={2}&from={3}&template={4}&language={5}&recipient={6}&{7}';
+    private static final String ApiKey = ‘COMPANY_ID’;
+    private static final String ApiSecret = ‘API_KEY’;
+
+    /**
+     * doCalloutFromFuture
+     * Sent out a single invitation to a customer
+     *
+     * @param formId		The form identifier. Value can be generated on the Company settings API page
+     * @param templateId 	The invitation template identifier. Value can be generated on the Company settings API page
+     * @param languageCode	The template language code. Value can be generated on the Company settings API page
+     * @param fromAddress	Sender email address. Must be associated with an registered Starred account which is linked to the company.
+     * @param toAddress		Recipient email address
+     * @param tags			URL parameter formatted string of tags (i.e. 'firstName=John&lastName=Doe&customTag=customValue')
+     */
+    @future (callout=true)
+    public static void doCalloutFromFuture(Integer formId,
+                                           Integer templateId,
+                                           String languageCode,
+                                           String fromAddress,
+                                           String toAddress,
+                                           String tags) {
+
+        try {
+
+            // Append the parameters to a filler for use in String.format()
+            // @see https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_methods_system_string.htm
+			      List<String> fillers = new String[] { 
+                    ApiKey,
+                    ApiSecret,
+                    string.valueof(formId),
+                    fromAddress,
+                    string.valueof(templateId),
+                    languageCode,
+                    toAddress,
+                    tags
+            };
+
+            // Format the API endpoint URL with the parameters
+            String endpoint = String.format(ApiURL, fillers);
+
+            // Add debug information
+            System.debug('Sending Starred invitation');
+            System.debug('Starred Endpoint: ' + endpoint);
+
+            // Create the HTTP request
+            HttpRequest req = new HttpRequest();
+            req.setEndpoint(endpoint);
+            req.setMethod('GET');
+
+            // Send the API call using the HTTP request
+            Http http = new Http();
+            HTTPResponse res = http.send(req);
+
+            // Add debug information
+            System.debug('Starred invitation send');
+            System.debug('Response:');
+            System.debug(res.getBody());
+
+        } catch(System.CalloutException e) {
+
+            // Catch the exception and output debug information
+            System.debug('An error occurred while connecting to Starred');
+            System.debug(e);
+
+        }
+
+    }
+
+}

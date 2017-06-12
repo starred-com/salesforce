@@ -1,0 +1,74 @@
+trigger Case_StarredInviteTrigger on Case (after update) {
+
+    // Payper : Case evaluation form
+    private static final Integer formId = FORM_ID;
+
+    // Payper : Uitnodiging Case evalution
+    private static final Integer templateId = TEMPLATE_ID;
+    private static final String languageCode = 'nl';
+    private static final String fromAddress = 'FROM_EMAIL_ADDRESS';
+
+    // The URL parameter formatted string with tags
+    private static final String parameters = 'firstName={0}&lastName={1}&Case-owner={2}&Accountname={3}';
+
+    // Add debug information
+    System.debug('Running Case_StarredInviteTrigger');
+
+    // For each case
+    for(Case c : Trigger.new){
+
+        // Add debug information
+        System.debug('Processing case ' + c.Id);
+
+        // Get the Case contact
+        Contact contact = [SELECT Email,FirstName,LastName FROM Contact WHERE Id = :c.ContactId];
+
+        // Get the case owner
+        User owner = [SELECT Name FROM User WHERE Id = :c.OwnerId];
+
+        // Get the case Account
+        Account account = [SELECT Name FROM Account WHERE Id = :c.AccountId];
+
+        // Check if the case is eligable for feedback invitation
+        if (c.Status == 'Closed') {
+
+          // Add debug information
+          System.debug('Case is eligable for feedback invitation');
+
+           // Retrieve the case contact fields & other tags
+           String toAddress = contact.Email;
+           String firstName = contact.FirstName;
+           String lastName = contact.LastName;
+           String caseOwner = owner.Name;
+           String accountName = account.Name;
+
+           // Append the parameters to a filler for use in String.format()
+           // @see https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_methods_system_string.htm
+           List<String> fillers = new String[] {
+               firstName,
+               lastName,
+               caseOwner,
+               accountName
+           };
+
+           // Build the tag list based on the parameters
+           String tags = String.format(parameters, fillers);
+
+           // Add debug information
+           System.debug('Sending invitation to "' + toAddress + '" using the following tags: ' + tags);
+
+           // Sent the invitation using the Starred API
+           StarredInvitationSender.doCalloutFromFuture(
+               formId,
+               templateId,
+               languageCode,
+               fromAddress,
+               toAddress,
+               tags
+           );
+
+       }
+
+    }
+
+}
