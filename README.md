@@ -14,3 +14,4 @@ Furthermore you're required to specify which tags/properties you're willing to s
 
 ## Reading Starred Results in Salesforce
 Sending Starred results back in to Salesforce is currently not supported, but can be achieved very easily through Zapier.
+To achieve this, you will need a working Zapier account, and use their [Webhook Zap](https://zapier.com/zapbook/webhook/) in combination with [Starred Webhooks](https://app.starred.com/api). Currently, this only works when you've opted to post Form data, instead of JSON data.
