@@ -21,6 +21,7 @@ Please follow this guideline to build integration between starred and Salesforce
 8. Leave Setup Options blank unless you want to grab a child key from data Object.
 9. On Test this Step interface you will see a URL.
 
+![alt text](https://github.com/starred-com/salesforce/blob/salesforce-zap/Reading%20Starred%20Results%20in%20Salesforce/Section-1-Step-9.png "Section 1 Step 9")
 
 ### Section 2. Setup Callback URL in Starred
 
@@ -30,6 +31,8 @@ Please follow this guideline to build integration between starred and Salesforce
 4. Paste the URL from Step 9 in Section 1 in Callback URL field.
 5. Select 'Post form data' radio button.
 6. Click Save.
+
+![alt text](https://github.com/starred-com/salesforce/blob/salesforce-zap/Reading%20Starred%20Results%20in%20Salesforce/Section-2-Step-4.png "Section 2 Step 4")
 
 
 **Optional Steps to Get test data in Zapier.**
