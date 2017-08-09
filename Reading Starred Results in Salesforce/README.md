@@ -40,4 +40,13 @@ Please follow this guideline to build integration between starred and Salesforce
 _We will pick up where we left off in step 9. in Section 1_
 
 1. On 'Test this Step' interface click 'OK, I did this'.
-2. Zapier will listen to webhook and will get collect data when triggered.
+2. Zapier will listen to Webhook and will get collect data when triggered.
+
+### Section 4. Setup Salesforce Action in Zapier
+1. In 'Choose an Action App' select Salesforce.
+2. In Select, Salesforce Action Select the Action you want to create.
+3. In 'Select Salesforce Account' Interface Connect your Salesforce account. (We recommend connecting developer account for testing purposes)
+4. Configure The template for the Salesforce Action and click 'Continue'.
+5. In Test This Step you can click 'Create & Continue' to Test this Integration or click 'Skip Test & Continue'.
+
+_Congratulations, you have successfully Integrated Starred feedback data with Salesforce._
